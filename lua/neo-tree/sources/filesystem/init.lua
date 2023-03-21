@@ -184,11 +184,15 @@ end
 
 M.reset_search = function(state, refresh, open_current_node)
   log.trace("reset_search")
+  -- Cancel any pending search
+  require("neo-tree.sources.filesystem.lib.filter_external").cancel()
+  -- reset search state
   state.fuzzy_finder_mode = nil
   state.use_fzy = nil
   state.fzy_sort_result_scores = nil
   state.fzy_sort_file_list_cache = nil
   state.sort_function_override = nil
+
   if refresh == nil then
     refresh = true
   end

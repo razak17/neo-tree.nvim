@@ -52,14 +52,8 @@ local define_events = function()
     { "BufModifiedSet" },
     0,
     function(args)
-      if utils.is_real_file(args.afile) then
-        -- we could use args.afile to update the sigle file that changed, but it seems like we miss
-        -- buffers when `:wa` is used.
-        args.modified_buffers = utils.get_modified_buffers()
-        return args
-      else
-        return false
-      end
+      args.modified_buffers = utils.get_modified_buffers()
+      return args
     end
   )
 
@@ -135,10 +129,10 @@ local restore_local_window_settings = function(winid)
     vim.wo.number = wo.number
     vim.wo.relativenumber = wo.relativenumber
     vim.wo.winhighlight = wo.winhighlight
-    log.info("Window settings restored")
+    log.debug("Window settings restored")
     vim.api.nvim_win_set_var(0, "neo_tree_settings_applied", false)
   else
-    log.info("No window settings to restore")
+    log.debug("No window settings to restore")
   end
 end
 
